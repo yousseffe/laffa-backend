@@ -67,12 +67,6 @@ router.put('/:id', asyncHandler(async (req, res) => {
 router.delete('/:id', asyncHandler(async (req, res) => {
     const subCategoryID = req.params.id;
     try {
-        // Check if any brand is associated with the sub-category
-        const brandCount = await Brand.countDocuments({ subcategoryId: subCategoryID });
-        if (brandCount > 0) {
-            return res.status(400).json({ success: false, message: "Cannot delete sub-category. It is associated with one or more brands." });
-        }
-
         // Check if any products reference this sub-category
         const products = await Product.find({ proSubCategoryId: subCategoryID });
         if (products.length > 0) {
